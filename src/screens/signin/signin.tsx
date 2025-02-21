@@ -1,22 +1,32 @@
-import { Text, TextInput, View, SafeAreaView, Image, Animated, Pressable } from 'react-native';
+import { 
+  Text, 
+  TextInput, 
+  View, 
+  Image, 
+  Animated, 
+  Pressable, 
+  ScrollView 
+} from 'react-native';
 import { useRef, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export default function Login() {
-
   const scaleAnim = useRef(new Animated.Value(1)).current;
-  const [buttonPressed, setButtonPressed] = useState(false); 
+  const [buttonPressed, setButtonPressed] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
-  // Reduz o botão ao pressionar
+
   const handlePressIn = () => {
-    setButtonPressed(true); 
+    setButtonPressed(true);
     Animated.spring(scaleAnim, {
       toValue: 0.90,
       useNativeDriver: true,
     }).start();
   };
+
   const handlePressOut = () => {
-    setButtonPressed(false); 
+    setButtonPressed(false);
     Animated.spring(scaleAnim, {
       toValue: 1,
       friction: 3,
@@ -25,68 +35,113 @@ export default function Login() {
   };
 
   return (
-    <View className="flex-1 bg-white p-6 justify-center items-center">
-
-      
-      <View className="flex items-center">
-        <Image
-          source={require('../../assets/logo.png')}
-          style={{ width: 300, height: 150, marginBottom: 30 }}
-        />
-        <Text className="text-4xl font-bold text-black">Cadastre-se!</Text>
-      </View>
-
-      <View className="mt-8 w-full px-8">
-        <View className="area-texto">
-          <TextInput
-            className="campo-texto"
-            placeholder="Nome Completo"
-            placeholderTextColor="#6b7280"
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-white p-4">
+      <View className="flex-1 justify-center items-center">
+        <View className="flex items-center">
+          <Image
+            source={require('../../assets/logo.png')}
+            style={{ width: 300, height: 150, marginBottom: 30 }}
           />
-          <MaterialIcons name="account-circle" size={24} color="gray" />
+          <Text className="text-4xl font-bold text-black">Crie sua conta</Text>
         </View>
 
-        <Text className="text-xl text-gray-700 mt-5">Senha</Text>
-        <SafeAreaView>
-          <View className="area-texto">
+        <View className="mt-8 w-full px-8">
+          
+          <View className="area-texto rounded-full flex-row items-center p-1 border border-gray-300">
             <TextInput
-              className="campo-texto"
+              className="campo-texto flex-1"
+              placeholder="Digite seu nome completo"
+              placeholderTextColor="#6b7280"
+            />
+            <MaterialIcons name="account-circle" size={24} color="gray" />
+          </View>
+
+         
+          <View className="area-texto rounded-full flex-row items-center p-1 border border-gray-300">
+            <TextInput
+              className="campo-texto flex-1"
+              placeholder="Digite seu telefone"
+              placeholderTextColor="#6b7280"
+              keyboardType="phone-pad"
+            />
+            <MaterialIcons name="phone" size={24} color="gray" />
+          </View>
+
+          
+          <View className="area-texto rounded-full flex-row items-center p-1  border border-gray-300">
+            <TextInput
+              className="campo-texto flex-1"
+              placeholder="Digite seu e-mail"
+              placeholderTextColor="#6b7280"
+              keyboardType="email-address"
+            />
+            <MaterialIcons name="mail" size={24} color="gray" />
+          </View>
+
+          
+          <View className="area-texto rounded-full flex-row items-center p-1 border border-gray-300">
+            <TextInput
+              className="campo-texto flex-1"
               placeholder="Digite sua senha"
               placeholderTextColor="#6b7280"
-              secureTextEntry
+              secureTextEntry={!passwordVisible}
             />
-            <MaterialIcons name="remove-red-eye" size={24} color="gray" />
+            <Pressable onPress={() => setPasswordVisible(prev => !prev)}>
+              <MaterialIcons 
+                name={passwordVisible ? "visibility" : "visibility-off"} 
+                size={24} 
+                color="gray" 
+              />
+            </Pressable>
           </View>
-        </SafeAreaView>
-      </View>
 
-      <View className="mt-8 w-full px-8">
-        <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-          <Pressable
-            onPressIn={handlePressIn}
-            onPressOut={handlePressOut}
-            style={{
-              backgroundColor: buttonPressed ? '#FDE018' : '#FACC15', 
-              paddingVertical: 16,
-              borderRadius: 999,
-              shadowColor: '#000',
-              shadowOpacity: 0.2,
-              shadowOffset: { width: 0, height: 2 },
-              shadowRadius: 4,
-              elevation: 5,
-            }}
-          >
-            <Text className="text-center text-black text-xl font-bold">Entrar</Text>
-          </Pressable>
-        </Animated.View>
-      </View>
+          <View className="area-texto rounded-full flex-row items-center p-1 mb-4 border border-gray-300">
+            <TextInput
+              className="campo-texto flex-1"
+              placeholder="Confirme sua senha"
+              placeholderTextColor="#6b7280"
+              secureTextEntry={!confirmPasswordVisible}
+            />
+            <Pressable onPress={() => setConfirmPasswordVisible(prev => !prev)}>
+              <MaterialIcons 
+                name={confirmPasswordVisible ? "visibility" : "visibility-off"} 
+                size={24} 
+                color="gray" 
+              />
+            </Pressable>
+          </View>
+        </View>
 
-      <Text className="mt-6 text-center text-gray-500">
-        Não tem conta?{' '}
-        <Text className="text-yellow-500 font-bold">
-          Crie agora!
+        <View className="mt-8 w-full px-8">
+          <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+            <Pressable
+              onPressIn={handlePressIn}
+              onPressOut={handlePressOut}
+              style={{
+                backgroundColor: buttonPressed ? '#FDE018' : '#FACC15',
+                paddingVertical: 16,
+                borderRadius: 999,
+                shadowColor: '#000',
+                shadowOpacity: 0.2,
+                shadowOffset: { width: 0, height: 2 },
+                shadowRadius: 4,
+                elevation: 5,
+              }}
+            >
+              <Text className="text-center text-black text-xl font-bold">
+                Cadastrar
+              </Text>
+            </Pressable>
+          </Animated.View>
+        </View>
+
+        <Text className="mt-6 text-center text-gray-500">
+          Já possui uma conta?{' '}
+          <Text className="text-yellow-500 font-bold">
+            Faça login
+          </Text>
         </Text>
-      </Text>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
