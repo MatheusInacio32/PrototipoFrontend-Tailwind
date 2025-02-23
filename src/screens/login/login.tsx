@@ -1,33 +1,32 @@
 import { Text, TextInput, View, SafeAreaView, Image, Animated, Pressable } from 'react-native';
 import { useRef, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../routes/types';
 
+type NavigationProps = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 export default function Login() {
-
+  const navigation = useNavigation<NavigationProps>();
   const scaleAnim = useRef(new Animated.Value(1)).current;
-  const [buttonPressed, setButtonPressed] = useState(false); 
-
-  // Reduz o botão ao pressionar
+  const [buttonPressed, setButtonPressed] = useState(false);
   const handlePressIn = () => {
-    setButtonPressed(true); 
+    setButtonPressed(true);
     Animated.spring(scaleAnim, {
       toValue: 0.90,
       useNativeDriver: true,
     }).start();
   };
   const handlePressOut = () => {
-    setButtonPressed(false); 
+    setButtonPressed(false);
     Animated.spring(scaleAnim, {
       toValue: 1,
       friction: 3,
       useNativeDriver: true,
     }).start();
   };
-
   return (
     <View className="flex-1 bg-white p-6 justify-center items-center">
-
-      
       <View className="flex items-center">
         <Image
           source={require('../../assets/logo.png')}
@@ -35,7 +34,6 @@ export default function Login() {
         />
         <Text className="text-4xl font-bold text-black">Bem-vindo!</Text>
       </View>
-
       <View className="mt-8 w-full px-8">
         <Text className="text-xl text-gray-700">Email</Text>
         <View className="area-texto">
@@ -46,7 +44,6 @@ export default function Login() {
           />
           <MaterialIcons name="email" size={24} color="gray" />
         </View>
-
         <Text className="text-xl text-gray-700 mt-5">Senha</Text>
         <SafeAreaView>
           <View className="area-texto">
@@ -60,14 +57,13 @@ export default function Login() {
           </View>
         </SafeAreaView>
       </View>
-
       <View className="mt-8 w-full px-8">
         <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
           <Pressable
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
             style={{
-              backgroundColor: buttonPressed ? '#FDE018' : '#FACC15', 
+              backgroundColor: buttonPressed ? '#FDE018' : '#FACC15',
               paddingVertical: 16,
               borderRadius: 999,
               shadowColor: '#000',
@@ -81,10 +77,12 @@ export default function Login() {
           </Pressable>
         </Animated.View>
       </View>
-
       <Text className="mt-6 text-center text-gray-500">
         Não tem conta?{' '}
-        <Text className="text-yellow-500 font-bold">
+        <Text 
+          className="text-yellow-500 font-bold"
+          onPress={() => navigation.navigate('SignIn')}
+        >
           Crie agora!
         </Text>
       </Text>
