@@ -4,15 +4,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useFonts, Outfit_700Bold } from '@expo-google-fonts/outfit';
 import AppLoading from 'expo-app-loading';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../routes/types';
-type NavigationProps = NativeStackNavigationProp<RootStackParamList, 'SignIn'>;
+import { useRouter } from 'expo-router';
+
 export default function SignIn() {
   const [fontsLoaded] = useFonts({
     Outfit_700Bold,
   });
-  const navigation = useNavigation<NavigationProps>();
+  const router = useRouter();
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const [buttonPressed, setButtonPressed] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -138,7 +136,7 @@ export default function SignIn() {
             Já possui uma conta?{' '}
             
             <Text className="text-yellow-500 font-bold"
-            onPress={() => navigation.navigate('Login')} >
+            onPress={() => router.push('/routes/login')} >
               Faça login
             </Text>
           </Text>

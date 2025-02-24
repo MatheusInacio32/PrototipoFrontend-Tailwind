@@ -1,13 +1,11 @@
 import { Text, TextInput, View, SafeAreaView, Image, Animated, Pressable } from 'react-native';
 import { useRef, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../routes/types';
+import { useRouter } from 'expo-router';
 
-type NavigationProps = NativeStackNavigationProp<RootStackParamList, 'Login'>;
+
 export default function Login() {
-  const navigation = useNavigation<NavigationProps>();
+  const router = useRouter();
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const [buttonPressed, setButtonPressed] = useState(false);
   const handlePressIn = () => {
@@ -81,7 +79,7 @@ export default function Login() {
         Não tem conta?{' '}
         <Text 
           className="text-yellow-500 font-bold"
-          onPress={() => navigation.navigate('SignIn')}
+          onPress={() => router.push('/routes/signin')}
         >
           Crie agora!
         </Text>
